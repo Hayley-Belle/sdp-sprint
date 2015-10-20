@@ -1,0 +1,49 @@
+import android.app.Activity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
+/**
+ * Created by Hayley-Belle on 06-Oct-15.
+ */
+public class CustomAdapter extends ArrayAdapter {
+    private Activity activity;
+    private final String[] titles, dates;
+
+    public CustomAdapter(Activity context, int resource, String[] titles, String[] dates) {
+        super(context, resource, titles);
+        this.activity = context;
+        this.titles = titles;
+        this.dates = dates;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View rowView = convertView;
+        ViewHolder view;
+        if (rowView == null) {
+            // Get a new instance of the row layout view
+            LayoutInflater inflater = activity.getLayoutInflater();
+            rowView = inflater.inflate(R.layout.row, null);
+            // Hold the view objects in an object, that way the don't need to be "re-found"
+            view = new ViewHolder();
+            view.event_name = (TextView) rowView.findViewById(R.id.event_name);
+            view.event_date = (TextView) rowView.findViewById(R.id.event_date);
+            rowView.setTag(view);
+        } else {
+            view = (ViewHolder) rowView.getTag();
+        }
+        /** Set data to your Views. */
+        String m = titles[position];
+        String p = dates[position];
+        view.event_name.setText(m);
+        view.event_date.setText(p);
+        return rowView;
+    }
+
+    protected static class ViewHolder {
+        protected TextView event_name;
+        protected TextView event_date;
+    }
+}
